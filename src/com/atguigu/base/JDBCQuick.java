@@ -1,5 +1,7 @@
 package com.atguigu.base;
 
+import com.mysql.cj.jdbc.Driver;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -7,8 +9,11 @@ import java.sql.Statement;
 
 public class JDBCQuick {
     public static void main(String[] args) throws Exception {
-        // 1.注册驱动
-        Class.forName("com.mysql.cj.jdbc.Driver");
+        // 1.注册驱动(JDK6之后可以省略)
+        //Class.forName("com.mysql.cj.jdbc.Driver");
+        //这种注册方法和com.mysql.cj.jdbc.Driver中的注册方法相同
+        //new的Driver要是com.mysql.cj.jdbc包下的
+        //DriverManager.registerDriver(new Driver());
 
         // 2.创建链接对象
         String url = "jdbc:mysql://localhost:3306/atguigu";
