@@ -115,4 +115,55 @@ public class JDBCAdvanced {
         preparedStatement.close();
         connection.close();
     }
+
+    @Test
+    public void testMoreInsert() throws Exception {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        String url = "jdbc:mysql://localhost:3306/atguigu";
+        Connection connection = DriverManager.getConnection(url, "root", "123456");
+
+        String sql = "INSERT INTO t_emp(emp_name, emp_salary, emp_age) values (?, ?, ?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        //获取当前行代码执行的时间
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < 10000; i++) {
+            preparedStatement.setString(1, "marry" + i);
+            preparedStatement.setDouble(2, 100.00 + i);
+            preparedStatement.setInt(3, 20 + i);
+
+            preparedStatement.executeUpdate();
+        }
+        long endTime = System.currentTimeMillis();
+        System.out.println("消耗时间: " + (endTime - startTime));
+
+        preparedStatement.close();
+        connection.close();
+    }
+
+    @Test
+    public void testBatch() throws Exception {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        String url = "jdbc:mysql://localhost:3306/atguigu?rewriteBatchedStatements=true";
+        Connection connection = DriverManager.getConnection(url, "root", "123456");
+
+        String sql = "INSERT INTO t_emp(emp_name, emp_salary, emp_age) values (?, ?, ?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < 10000; i++) {
+            preparedStatement.setString(1, "marry" + i);
+            preparedStatement.setDouble(2, 100.00 + i);
+            preparedStatement.setInt(3, 20 + i);
+
+            preparedStatement.addBatch();
+        }
+        long endTime = System.currentTimeMillis();
+        System.out.println("执行耗时" + (endTime - startTime));
+
+        preparedStatement.executeBatch();
+
+        preparedStatement.close();
+        connection.close();
+    }
 }
