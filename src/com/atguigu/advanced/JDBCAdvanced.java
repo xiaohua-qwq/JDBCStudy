@@ -156,7 +156,7 @@ public class JDBCAdvanced {
             preparedStatement.setDouble(2, 100.00 + i);
             preparedStatement.setInt(3, 20 + i);
 
-            preparedStatement.addBatch();
+            preparedStatement.addBatch(); //添加到批处理任务中
         }
         long endTime = System.currentTimeMillis();
         System.out.println("执行耗时" + (endTime - startTime));
