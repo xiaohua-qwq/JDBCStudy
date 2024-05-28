@@ -1,5 +1,7 @@
 package com.atguigu.senior;
 
+import com.atguigu.senior.dao.baseDao;
+import com.atguigu.senior.pojo.Employee;
 import com.atguigu.senior.util.JDBCUtil;
 import com.atguigu.senior.util.JDBCUtilV2;
 import org.junit.Test;
@@ -8,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class JDBCUtilTest {
     //测试JDBC中查询的代码
@@ -62,5 +65,13 @@ public class JDBCUtilTest {
         System.out.println(v2Connection2);
         System.out.println(v2Connection3);
         JDBCUtilV2.release();
+    }
+
+    @Test
+    public void testPublicQuery() throws Exception {
+        baseDao baseDao = new baseDao();
+        String sql = "select * from t_emp where emp_id = ?";
+        List<Employee> employees = baseDao.executeQuery(Employee.class, sql, 1);
+        System.out.println(employees);
     }
 }
