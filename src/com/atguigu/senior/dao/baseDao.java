@@ -76,7 +76,8 @@ public class baseDao {
                     Object value = resultSet.getObject(i); //获取列数据的值
 
                     String columnName = metaData.getColumnName(i); //获取当前列的名字
-                    //TODO 数据库中列的名字和Java实体类的属性名不一致会导致报错
+                    //TODO 数据库中列的名字和Java实体类的属性名不一致会导致报错 因此使用时传入的sql语句要起别名
+                    System.out.println(columnName);
                     Field filLd = clazz.getDeclaredField(columnName); //获取要封装的对象属性(Field是一个属性)
                     filLd.setAccessible(false); //关闭私有化属性
                     filLd.set(t, value); //为T这个对象与当前列关联的属性赋值
@@ -92,5 +93,16 @@ public class baseDao {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * 返回查询结果中的第一个数据
+     */
+    public <T> T executeQueryBean(Class<T> clazz, String sql, Object... args) {
+        List<T> resultList = this.executeQuery(clazz, sql, args);
+        if (resultList == null || resultList.isEmpty()) {
+            return null;
+        }
+        return resultList.getFirst();
     }
 }

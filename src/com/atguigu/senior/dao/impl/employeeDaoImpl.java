@@ -1,12 +1,12 @@
 package com.atguigu.senior.dao.impl;
 
+import com.atguigu.senior.dao.EmployeeDao;
 import com.atguigu.senior.dao.baseDao;
-import com.atguigu.senior.dao.employeeDao;
 import com.atguigu.senior.pojo.Employee;
 
 import java.util.List;
 
-public class employeeDaoImpl implements employeeDao {
+public class employeeDaoImpl extends baseDao implements EmployeeDao {
     /**
      * 查询数据库中所有的记录
      *
@@ -14,7 +14,8 @@ public class employeeDaoImpl implements employeeDao {
      */
     @Override
     public List<Employee> selectAll() {
-        return null;
+        String sql = "select emp_id as empId,emp_name as empName,emp_salary as empSalary,emp_age as empAge from t_emp";
+        return this.executeQuery(Employee.class, sql);
     }
 
     /**

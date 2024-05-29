@@ -1,15 +1,15 @@
 package com.atguigu.senior;
 
+import com.atguigu.senior.dao.EmployeeDao;
 import com.atguigu.senior.dao.baseDao;
+import com.atguigu.senior.dao.EmployeeDao;
+import com.atguigu.senior.dao.impl.employeeDaoImpl;
 import com.atguigu.senior.pojo.Employee;
 import com.atguigu.senior.util.JDBCUtil;
 import com.atguigu.senior.util.JDBCUtilV2;
 import org.junit.Test;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class JDBCUtilTest {
@@ -69,9 +69,29 @@ public class JDBCUtilTest {
 
     @Test
     public void testPublicQuery() throws Exception {
-        baseDao baseDao = new baseDao();
-        String sql = "select * from t_emp where emp_id = ?";
-        List<Employee> employees = baseDao.executeQuery(Employee.class, sql, 1);
-        System.out.println(employees);
+        EmployeeDao employeeDao = new employeeDaoImpl();
+        List<Employee> employees = employeeDao.selectAll();
+        for (Employee employee : employees) {
+            System.out.println(employee);
+        }
+    }
+
+    @Test
+    public void whatIsThisColumnFuck() throws Exception {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/atguigu", "root", "123456");
+        String sql = "select emp_id as empId,emp_name as empName,emp_salary as empSalary,emp_age as empAge from t_emp";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            ResultSetMetaData metaData = preparedStatement.getMetaData();
+            String columnName1 = metaData.getColumnName(1);
+            String columnName2 = metaData.getColumnName(2);
+            String columnName3 = metaData.getColumnName(3);
+            String columnName4 = metaData.getColumnName(4);
+            System.out.println(columnName1 + columnName2 + columnName3 + columnName4);
+        }
+        resultSet.close();
+        preparedStatement.close();
+        connection.close();
     }
 }

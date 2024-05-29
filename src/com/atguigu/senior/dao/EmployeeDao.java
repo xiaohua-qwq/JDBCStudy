@@ -4,7 +4,7 @@ import com.atguigu.senior.pojo.Employee;
 
 import java.util.List;
 
-public interface employeeDao {
+public interface EmployeeDao {
 
     /**
      * 查询数据库中所有的记录
