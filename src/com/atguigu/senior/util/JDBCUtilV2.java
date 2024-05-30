@@ -50,6 +50,7 @@ public class JDBCUtilV2 {
             Connection connection = threadLocal.get();
             if (connection != null) {
                 threadLocal.remove();
+                connection.setAutoCommit(false);
                 connection.close();
             }
         } catch (SQLException e) {

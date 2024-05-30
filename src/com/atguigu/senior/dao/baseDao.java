@@ -34,7 +34,11 @@ public class baseDao {
 
             //释放连接
             preparedStatement.close();
-            JDBCUtilV2.release();
+            //只有当前自动提交为开启时 才进行资源释放
+            //如果自动提交被关闭 则这段代码可能是一个事务的一部分 那么不释放连接
+            if (connection.getAutoCommit()) {
+                JDBCUtilV2.release();
+            }
 
             //返回结果
             return result;
@@ -88,7 +92,9 @@ public class baseDao {
             //释放链接并返回结果
             resultSet.close();
             preparedStatement.close();
-            JDBCUtilV2.release();
+            if (connection.getAutoCommit()) {
+                JDBCUtilV2.release();
+            }
             return resultList;
         } catch (Exception e) {
             throw new RuntimeException(e);
